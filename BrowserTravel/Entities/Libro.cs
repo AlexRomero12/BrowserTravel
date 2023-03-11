@@ -17,14 +17,13 @@ namespace BrowserTravel.Entities
         /// </summary>
         [Key]
         [Required]
-        [MaxLength(13)]
         public int ISBN { get; set; }
 
         /// <summary>
         /// Gets or sets editorial ID.
         /// </summary>
         [Required]
-        public Editorial EditorialID { get; set; }
+        public Editorial Editorial { get; set; }
 
         /// <summary>
         /// Gets or sets titulo.
@@ -43,7 +42,6 @@ namespace BrowserTravel.Entities
         /// Gets or sets numeber of pages.
         /// </summary>
         [Required]
-        [MaxLength(45)]
         public int N_paginas { get; set; }
 
         public ICollection<Autor_has_libro> AutoresLibros { get; set; }

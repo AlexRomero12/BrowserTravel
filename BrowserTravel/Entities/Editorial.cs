@@ -1,4 +1,8 @@
-﻿namespace BrowserTravel.Entities
+﻿// <copyright file="Editorial.cs" company="Alexander Romero">
+// Copyright (c) Alexander Romero. All rights reserved.
+// </copyright>
+
+namespace BrowserTravel.Entities
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -8,11 +12,10 @@
     public class Editorial
     {
         /// <summary>
-        /// Gets or sets identification.
+        /// Gets or sets identifier.
         /// </summary>
         [Key]
         [Required]
-        [MaxLength(10)]
         public int Id { get; set; }
 
         /// <summary>
@@ -28,5 +31,7 @@
         [Required]
         [MaxLength(45)]
         public string Sede { get; set; }
+
+        public string NombreCompleto => $"{this.Nombre}, {this.Sede}";
     }
 }

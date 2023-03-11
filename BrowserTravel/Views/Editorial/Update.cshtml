@@ -1,0 +1,26 @@
+﻿@model BrowserTravel.Entities.Editorial
+@{
+    ViewData["Title"] = "Actualizar editorial";
+}
+
+<h1>Actualizar Autor @Model.Nombre @Model.Sede</h1>
+<div asp-validation-summary="ModelOnly"></div>
+
+<form asp-action="Update">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label">Nombre</label>
+        <input type="text" asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Sede" class="form-label">Apellido</label>
+        <input type="text" asp-for="Sede" class="form-control" />
+        <span asp-validation-for="Sede" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    <a class="btn btn-danger" asp-action="Index">Cancel</a>
+</form>
+@section Scripts{
+        <partial name="_ValidationScriptsPartial" />
+}

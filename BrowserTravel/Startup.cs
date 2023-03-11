@@ -1,22 +1,23 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+// <copyright file="Startup.cs" company="Alexander Romero">
+// Copyright (c) Alexander Romero. All rights reserved.
+// </copyright>
 
 namespace BrowserTravel
 {
+    using BrowserTravel.Services;
+    using BrowserTravel.Services.Interfaces;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -25,7 +26,12 @@ namespace BrowserTravel
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer("name=DefaultConnection"));
+            string connectionString = this.Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IRepositoryLibro, RepositoryLibro>();
+            services.AddScoped<IRepositoryAutor, RepositoryAutor>();
+            services.AddScoped<IRepositoryEditorial, RepositoryEditorial>();
+            services.AddScoped<IRepositoryAutorLibro, RepositoryAutorLibro>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,9 +44,11 @@ namespace BrowserTravel
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -52,7 +60,7 @@ namespace BrowserTravel
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Libro}/{action=Index}/{id?}");
             });
         }
     }

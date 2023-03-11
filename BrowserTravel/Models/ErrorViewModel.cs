@@ -1,3 +1,7 @@
+// <copyright file="ErrorViewModel.cs" company="Alexander Romero">
+// Copyright (c) Alexander Romero. All rights reserved.
+// </copyright>
+
 using System;
 
 namespace BrowserTravel.Models

@@ -1,7 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿// <copyright file="20230311005121_Autores.cs" company="Alexander Romero">
+// Copyright (c) Alexander Romero. All rights reserved.
+// </copyright>
 
 namespace BrowserTravel.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class Autores : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

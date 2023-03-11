@@ -1,0 +1,36 @@
+﻿@model List<BrowserTravel.Entities.Libro>
+
+@{
+    ViewData["Title"] = "Libro";
+}
+
+<h1>Libros</h1>
+<h5>Listado de libros</h5>
+<a asp-action="Create" class="btn btn-primary mb-3">Create new</a>
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Actions</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var libro in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" value="@libro.ISBN" class="ids" />
+                        <a class="btn btn-warning" asp-action="update" asp-route-id="@libro.ISBN">Edit</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@libro.ISBN">Delete</a>
+                    </td>
+                    <td>
+                        @libro.Titulo
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

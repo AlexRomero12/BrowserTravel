@@ -1,0 +1,25 @@
+﻿@model BrowserTravel.Entities.Autor
+@{
+    ViewData["Title"] = "Crear Autor";
+}
+
+<h1>Crear Autor</h1>
+<div asp-validation-summary="ModelOnly"></div>
+
+<form asp-controller="Autor" asp-action="Create">
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label">Nombre</label>
+        <input type="text" asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Apellido" class="form-label">Apellido</label>
+        <input type="text" asp-for="Apellido" class="form-control" />
+        <span asp-validation-for="Apellido" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    <a class="btn btn-danger" asp-action="Index">Cancelar</a>
+</form>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

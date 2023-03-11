@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿// <copyright file="20230311022147_AddNewTables.cs" company="Alexander Romero">
+// Copyright (c) Alexander Romero. All rights reserved.
+// </copyright>
+
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BrowserTravel.Migrations
 {

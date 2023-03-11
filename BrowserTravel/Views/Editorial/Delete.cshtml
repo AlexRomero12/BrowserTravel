@@ -1,0 +1,12 @@
+﻿@model BrowserTravel.Entities.Editorial
+@{
+    ViewData["Title"] = "Eliminar editorial";
+}
+
+<h3 class="mb-3">Estas seguro de eliminar el autor @Model.Nombre @Model.Sede?</h3>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-primary">Eliminar</button>
+    <a class="btn btn-danger" asp-action="Index">Cancelar</a>
+</form>
