@@ -7,7 +7,7 @@ namespace BrowserTravel.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BrowserTravel.Entities;
+    using BrowserTravel.Models;
     using BrowserTravel.Services.Interfaces;
     using Microsoft.EntityFrameworkCore;
 
@@ -39,7 +39,7 @@ namespace BrowserTravel.Services
 
         public async Task<List<Editorial>> GetAll()
         {
-            return await this.dbContext.Editoriales.ToListAsync();
+            return await this.dbContext.Editoriales.Include(l => l.Libros).ToListAsync();
         }
 
         public async Task<Editorial> GetById(int id)

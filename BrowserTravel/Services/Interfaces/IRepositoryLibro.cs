@@ -6,31 +6,45 @@ namespace BrowserTravel.Services.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BrowserTravel.Entities;
+    using BrowserTravel.Models;
 
     /// <summary>
-    /// IRepositoryLibro.
+    /// Interface Repository Libro.
     /// </summary>
     public interface IRepositoryLibro
     {
         /// <summary>
-        /// Create libro in BD.
+        /// Get all Libros.
         /// </summary>
-        /// <param name="libro">Model libro.</param>
+        /// <returns>Libro list.</returns>
+        Task<List<Libro>> GetAllAsync();
+
+        /// <summary>
+        /// Get libro by ID.
+        /// </summary>
+        /// <param name="id">Libro id.</param>
+        /// <returns>Libro entity.</returns>
+        Task<Libro> GetByIdAsync(int id);
+
+        /// <summary>
+        /// Add libro in BD.
+        /// </summary>
+        /// <param name="libro">Libro entity.</param>
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<Libro> Create(Libro libro);
+        Task AddAsync(Libro libro);
 
-        Task Update(Libro libro);
+        /// <summary>
+        /// Update libro in BD.
+        /// </summary>
+        /// <param name="libro">Libro entity.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        Task UpdateAsync(Libro libro);
 
-        Task Delete(Libro libro);
-
-        Task GetByID(int id);
-
-        Task GetByAutorID(int id);
-
-        Task<bool> Exist(int id);
-
-        Task<List<Libro>> GetAll();
-        Task SaveChangesAsync();
+        /// <summary>
+        /// Delete libro in BD.
+        /// </summary>
+        /// <param name="libro">Libro entity.</param>
+        /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
+        Task DeleteAsync(Libro libro);
     }
 }

@@ -5,10 +5,7 @@
 namespace BrowserTravel.Controllers
 {
     using System.Threading.Tasks;
-    using BrowserTravel.Entities;
-    using BrowserTravel.Migrations;
     using BrowserTravel.Models;
-    using BrowserTravel.Services;
     using BrowserTravel.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,19 +18,15 @@ namespace BrowserTravel.Controllers
     {
         private readonly IRepositoryLibro repositoryLibro;
         private readonly IRepositoryEditorial repositoryEditorial;
-        private readonly IRepositoryAutor repositoryAutor;
-        private readonly IRepositoryAutorLibro repositoryAutorLibro;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LibroController"/> class.
         /// </summary>
         /// <param name="repositoryLibro">repository Libro.</param>
-        public LibroController(IRepositoryLibro repositoryLibro, IRepositoryEditorial repositoryEditorial, IRepositoryAutor repositoryAutor, IRepositoryAutorLibro repositoryAutorLibro)
+        public LibroController(IRepositoryLibro repositoryLibro, IRepositoryEditorial repositoryEditorial)
         {
             this.repositoryLibro = repositoryLibro;
             this.repositoryEditorial = repositoryEditorial;
-            this.repositoryAutor = repositoryAutor;
-            this.repositoryAutorLibro = repositoryAutorLibro;
         }
 
         /// <summary>
@@ -42,34 +35,162 @@ namespace BrowserTravel.Controllers
         /// <returns><see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task<IActionResult> Index()
         {
-            var libros = await this.repositoryLibro.GetAll();
+            var libros = await this.repositoryLibro.GetAllAsync();
             return this.View(libros);
         }
 
         /// <summary>
-        /// Reder create view.
+        /// .
         /// </summary>
-        /// <returns>IActionResult.</returns>
+        /// <returns></returns>
         public async Task<IActionResult> Create()
         {
-            this.ViewBag.Editoriales = await this.repositoryEditorial.GetAll();
-            this.ViewBag.Autores = await this.repositoryAutor.GetAll();
-            return this.View();
+            ViewData["EditorialId"] = new SelectList(await repositoryEditorial.GetAll(), "Id", "NombreCompleto");
+            return View();
         }
 
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="libro"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("ISBN,Editorial,Titulo,Sinopsis,N_paginas,AutoresLibros")] Libro libro)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("ISBN,Titulo,Sinopsis,N_Paginas,EditorialId")] Libro libro)
         {
             if (ModelState.IsValid)
             {
-                repositoryLibro.Create(libro);
+                await repositoryLibro.AddAsync(libro);
                 return RedirectToAction(nameof(Index));
             }
-
-            this.ViewBag.Editoriales = await this.repositoryEditorial.GetAll();
-            this.ViewBag.Autores = await this.repositoryAutor.GetAll();
-            return this.View();
+            ViewData["EditorialId"] = new SelectList(await repositoryEditorial.GetAll(), "Id", "NombreCompleto", libro.EditorialId);
+            return View(libro);
         }
 
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var libro = await this.repositoryLibro.GetByIdAsync(id.Value);
+            if (libro == null)
+            {
+                return NotFound();
+            }
+            ViewData["EditorialId"] = new SelectList(await repositoryEditorial.GetAll(), "Id", "NombreCompleto", libro.EditorialId);
+            return View(libro);
+        }
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="libro"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Titulo,Sinopsis,N_Paginas,EditorialId")] Libro libro)
+        {
+            if (id != libro.ISBN)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await repositoryLibro.UpdateAsync(libro);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await LibroExists(libro.ISBN))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["EditorialId"] = new SelectList(await repositoryEditorial.GetAll(), "Id", "NombreCompleto", libro.EditorialId);
+            return View(libro);
+        }
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var libro = await repositoryLibro.GetByIdAsync(id.Value);
+            if (libro == null)
+            {
+                return NotFound();
+            }
+
+            return View(libro);
+        }
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var libro = await repositoryLibro.GetByIdAsync(id);
+            if (libro == null)
+            {
+                return NotFound();
+            }
+
+            await repositoryLibro.DeleteAsync(libro);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var libro = await repositoryLibro.GetByIdAsync(id.Value);
+            if (libro == null)
+            {
+                return NotFound();
+            }
+
+            return View(libro);
+        }
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private async Task<bool> LibroExists(int id)
+        {
+            var libro = await repositoryLibro.GetByIdAsync(id);
+            return libro != null;
+        }
     }
 }

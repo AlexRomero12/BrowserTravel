@@ -5,7 +5,7 @@
 namespace BrowserTravel.Controllers
 {
     using System.Threading.Tasks;
-    using BrowserTravel.Entities;
+    using BrowserTravel.Models;
     using BrowserTravel.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc;
 

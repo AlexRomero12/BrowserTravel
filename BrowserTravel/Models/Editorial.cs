@@ -2,9 +2,11 @@
 // Copyright (c) Alexander Romero. All rights reserved.
 // </copyright>
 
-namespace BrowserTravel.Entities
+namespace BrowserTravel.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
     /// Entity Editorial.
@@ -32,6 +34,9 @@ namespace BrowserTravel.Entities
         [MaxLength(45)]
         public string Sede { get; set; }
 
-        public string NombreCompleto => $"{this.Nombre}, {this.Sede}";
+        public ICollection<Libro> Libros { get; set; }
+
+        [NotMapped]
+        public string NombreCompleto => $"{Nombre}, {Sede}";
     }
 }

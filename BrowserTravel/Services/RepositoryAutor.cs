@@ -7,7 +7,7 @@ namespace BrowserTravel.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BrowserTravel.Entities;
+    using BrowserTravel.Models;
     using BrowserTravel.Services.Interfaces;
     using Microsoft.EntityFrameworkCore;
 

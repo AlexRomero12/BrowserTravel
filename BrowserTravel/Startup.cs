@@ -31,7 +31,6 @@ namespace BrowserTravel
             services.AddScoped<IRepositoryLibro, RepositoryLibro>();
             services.AddScoped<IRepositoryAutor, RepositoryAutor>();
             services.AddScoped<IRepositoryEditorial, RepositoryEditorial>();
-            services.AddScoped<IRepositoryAutorLibro, RepositoryAutorLibro>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,7 +5,7 @@
 namespace BrowserTravel.Controllers
 {
     using System.Threading.Tasks;
-    using BrowserTravel.Entities;
+    using BrowserTravel.Models;
     using BrowserTravel.Services.Interfaces;
     using Microsoft.AspNetCore.Mvc;
 
@@ -135,6 +135,7 @@ namespace BrowserTravel.Controllers
             await this.repositoryAutor.Delete(autor);
             return this.RedirectToAction("Index");
         }
+
 
         /// <summary>
         /// Validate Autor Exist.

@@ -6,7 +6,7 @@ namespace BrowserTravel.Services.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BrowserTravel.Entities;
+    using BrowserTravel.Models;
 
     public interface IRepositoryAutor
     {

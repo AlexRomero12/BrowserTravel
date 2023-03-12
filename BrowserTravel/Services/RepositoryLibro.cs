@@ -1,63 +1,56 @@
-﻿// <copyright file="RepositoryLibro.cs" company="Alexander Romero">
-// Copyright (c) Alexander Romero. All rights reserved.
-// </copyright>
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using BrowserTravel;
+using BrowserTravel.Models;
+using BrowserTravel.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace BrowserTravel.Services
+/// <summary>
+/// RepositoryLibro.
+/// </summary>
+public class RepositoryLibro : IRepositoryLibro
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using BrowserTravel.Entities;
-    using BrowserTravel.Services.Interfaces;
-    using Microsoft.EntityFrameworkCore;
+    private readonly ApplicationDBContext dBContext;
 
-    public class RepositoryLibro : IRepositoryLibro
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RepositoryLibro"/> class.
+    /// </summary>
+    /// <param name="context">ApplicationDBContext</param>
+    public RepositoryLibro(ApplicationDBContext context)
     {
-        private readonly ApplicationDBContext dbContext;
+        this.dBContext = context;
+    }
 
-        public RepositoryLibro(ApplicationDBContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
+    /// <inheritdoc/>
+    public async Task<List<Libro>> GetAllAsync()
+    {
+        return await this.dBContext.Libros.Include(i => i.Editorial).ToListAsync();
+    }
 
-        public Task<Libro> Create(Libro libro)
-        {
-            throw new System.NotImplementedException();
-        }
+    /// <inheritdoc/>
+    public async Task<Libro> GetByIdAsync(int id)
+    {
+        return await this.dBContext.Libros.Include(i => i.Editorial).FirstOrDefaultAsync(m => m.ISBN == id);
+    }
 
-        public Task Delete(Libro libro)
-        {
-            throw new System.NotImplementedException();
-        }
+    /// <inheritdoc/>
+    public async Task AddAsync(Libro libro)
+    {
+        this.dBContext.Add(libro);
+        await this.dBContext.SaveChangesAsync();
+    }
 
-        public Task<bool> Exist(int id)
-        {
-            throw new System.NotImplementedException();
-        }
+    /// <inheritdoc/>
+    public async Task UpdateAsync(Libro libro)
+    {
+        this.dBContext.Update(libro);
+        await this.dBContext.SaveChangesAsync();
+    }
 
-        public Task GetByAutorID(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task GetByID(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<List<Libro>> GetAll()
-        {
-            return await this.dbContext.Libros.Select(s => s).ToListAsync();
-        }
-
-        public Task Update(Libro libro)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await this.dbContext.SaveChangesAsync();
-        }
+    /// <inheritdoc/>
+    public async Task DeleteAsync(Libro libro)
+    {
+        this.dBContext.Libros.Remove(libro);
+        await this.dBContext.SaveChangesAsync();
     }
 }

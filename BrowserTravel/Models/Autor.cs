@@ -2,10 +2,11 @@
 // Copyright (c) Alexander Romero. All rights reserved.
 // </copyright>
 
-namespace BrowserTravel.Entities
+namespace BrowserTravel.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
@@ -35,10 +36,10 @@ namespace BrowserTravel.Entities
         [Remote(action: "ValidateAutorExist", controller: "Autor", AdditionalFields = nameof(Nombre))]
         public string Apellido { get; set; }
 
+        public ICollection<Libro> Libros { get; set; }
 
-        public string NombreCompleto => $"{this.Nombre}, {this.Apellido}";
+        [NotMapped]
+        public string NombreCompleto => $"{Nombre}, {Apellido}";
 
-
-        public ICollection<Autor_has_libro> AutoresLibros { get; set; }
     }
 }
